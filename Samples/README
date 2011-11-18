@@ -1,0 +1,5 @@
+To compile the sample.tex file, use
+
+    pdflatex simple.tex
+
+
