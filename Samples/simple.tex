@@ -1,0 +1,40 @@
+\documentclass{report}
+
+\usepackage[left=1cm,top=1cm,right=1cm,bottom=1.5cm,nohead,nofoot]{geometry}
+\usepackage{amsmath}
+\usepackage{amsfonts} % \mathbb{...}
+
+
+\newcommand{\ket}[1]{\left| #1 \right>} % Use these rather than those garbage \rangle/mid/langle things.
+
+\begin{document}
+
+NOTE: The syntax follows that of Sakurai's textbook ``Modern Quantum Mechanics.'' Namely, $\ket{ j_{1}, j_{2}, j, m}.$
+
+We can simply inline the output by tacking \$'s onto it:
+$ \ket{ \frac{1}{2} ,  \frac{1}{2} ,  0 ,  0  } =  - \sqrt{  \frac{1}{2}  } \ket{ \frac{1}{2} ,  \frac{1}{2} ,  \frac{-1}{2} ,  \frac{1}{2}  } + \sqrt{  \frac{1}{2}  } \ket{ \frac{1}{2} ,  \frac{1}{2} ,  \frac{1}{2} ,  \frac{-1}{2}  }$.
+
+
+We can insert the result into math mode by tacking \$\$'s onto it:
+
+$$\ket{ \frac{1}{2} ,  \frac{1}{2} ,  0 ,  0  } =  - \sqrt{  \frac{1}{2}  } \ket{ \frac{1}{2} ,  \frac{1}{2} ,  \frac{-1}{2} ,  \frac{1}{2}  } + \sqrt{  \frac{1}{2}  } \ket{ \frac{1}{2} ,  \frac{1}{2} ,  \frac{1}{2} ,  \frac{-1}{2}  }$$
+
+
+
+We can enter a full-fledged math mode with alignment by adding two backslashes at the end of the lines, and aligning at the equal sign by tacking an ampersand onto it:
+
+\begin{align*}
+\ket{ \frac{1}{2} ,  \frac{1}{2} ,  0 ,  0  } &=  - \sqrt{  \frac{1}{2}  } \ket{ \frac{1}{2} ,  \frac{1}{2} ,  \frac{-1}{2} ,  \frac{1}{2}  } + \sqrt{  \frac{1}{2}  } \ket{ \frac{1}{2} ,  \frac{1}{2} ,  \frac{1}{2} ,  \frac{-1}{2}  } \\
+\ket{ \frac{1}{2} ,  \frac{1}{2} ,  1 ,  1  } &=  \ket{ \frac{1}{2} ,  \frac{1}{2} ,  \frac{1}{2} ,  \frac{1}{2}  } \\
+\ket{ \frac{1}{2} ,  \frac{1}{2} ,  1 ,  0  } &=  \sqrt{  \frac{1}{2}  } \ket{ \frac{1}{2} ,  \frac{1}{2} ,  \frac{-1}{2} ,  \frac{1}{2}  } + \sqrt{  \frac{1}{2}  } \ket{ \frac{1}{2} ,  \frac{1}{2} ,  \frac{1}{2} ,  \frac{-1}{2}  } \\
+\ket{ 3 ,  \frac{3}{2} ,  \frac{3}{2} ,  \frac{-1}{2}  } &=  - \sqrt{  \frac{2}{7}  } \ket{ 3 ,  \frac{3}{2} ,  -2 ,  \frac{3}{2}  } + \sqrt{  \frac{12}{35}  } \ket{ 3 ,  \frac{3}{2} ,  -1 ,  \frac{1}{2}  } - \sqrt{  \frac{9}{35}  } \ket{ 3 ,  \frac{3}{2} ,  0 ,  \frac{-1}{2}  } + \sqrt{  \frac{4}{35}  } \ket{ 3 ,  \frac{3}{2} ,  1 ,  \frac{-3}{2}  } \\
+\ket{ 3 ,  \frac{3}{2} ,  \frac{3}{2} ,  \frac{3}{2}  } &=  - \sqrt{  \frac{1}{35}  } \ket{ 3 ,  \frac{3}{2} ,  0 ,  \frac{3}{2}  } + \sqrt{  \frac{4}{35}  } \ket{ 3 ,  \frac{3}{2} ,  1 ,  \frac{1}{2}  } - \sqrt{  \frac{2}{7}  } \ket{ 3 ,  \frac{3}{2} ,  2 ,  \frac{-1}{2}  } + \sqrt{  \frac{4}{7}  } \ket{ 3 ,  \frac{3}{2} ,  3 ,  \frac{-3}{2}  } \\
+\ket{ 3 ,  \frac{3}{2} ,  \frac{9}{2} ,  \frac{5}{2}  } &=  \sqrt{  \frac{5}{12}  } \ket{ 3 ,  \frac{3}{2} ,  1 ,  \frac{3}{2}  } + \sqrt{  \frac{1}{2}  } \ket{ 3 ,  \frac{3}{2} ,  2 ,  \frac{1}{2}  } + \sqrt{  \frac{1}{12}  } \ket{ 3 ,  \frac{3}{2} ,  3 ,  \frac{-1}{2}  } \\
+\ket{ 3 ,  \frac{3}{2} ,  \frac{9}{2} ,  \frac{9}{2}  } &=  \ket{ 3 ,  \frac{3}{2} ,  3 ,  \frac{3}{2}  }
+\end{align*}
+
+
+This file was generated from the \emph{simple.tex} file.
+
+\end{document}
+
