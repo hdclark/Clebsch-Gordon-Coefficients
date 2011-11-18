@@ -1,0 +1,74 @@
+
+Basics
+======
+
+This program computes Clebsch-Gordon coefficients. Results are output in exact form (square roots
+ of rational numbers) and in either an on-screen (human parseable, computer non-parseable) format,
+ or in LaTeX code (computer parseable, human non-parseable.)
+
+
+Usage
+=====
+
+View the bottom of the source file to input the particular coefficients desired. The syntax is 
+ taken from Sakurai's 1994 (1985, 2011) textbook "Modern Quantum Mechanics." See page 211 to see
+ it in action.
+
+After editing the source for your desired decomposition (or just the specific coefficients 
+ themselves), recompile like
+
+    chmod 777 compile.sh
+    ./compile.sh
+
+ and then run the code like
+
+    ./cgc
+
+Be aware: the code may take a LONG time for certain values of parameters. "Why?" you ask?
+ Since everything is done in exact form, a lay-mans version of symbolic computation is used for
+ dealing with fractions and square roots of said fractions. If one were looking for floating
+ point numbers, they could be generated, like, a cah-jillion times faster. This way was 
+ preferrable when writing the code (before the speed was known.)
+
+
+Motivation
+==========
+
+This program was written (from scratch, no cheating, no parents helping me glue glitter or
+ anything) for the fourth assignment of Phys 500 - Quantum Mechanics at UBC in 2011.
+
+Normally, I would not bother with Clebsch-Gordon coefficients, but I figured it would be fun
+ to do something involving fractions. I also wanted to compute a large number of coefficients
+ for future reference. Also - output directly into LaTeX format is handy for a number of 
+ reasons.
+
+Extra Info - Details
+====================
+
+One will not likely have a "\ket{  }" or "\braket{ }{ }" macro in LaTeX. If you decide you 
+ want to use the LaTeX output, make sure to include the following macros in your source:
+
+    \newcommand{\ket}[1]{\left| #1 \right>} % Use these rather than those garbage \rangle/mid/langle things.
+    \newcommand{\bra}[1]{\left< #1 \right|} % These ones look much better because they can scale.
+    \newcommand{\braket}[2]{\left< #1 \vphantom{#2} \right|\left. #2 \vphantom{#1} \right>} % for Dirac brackets
+
+ (or use the nearly equivalent "renewcommand" or "ensurecommand" or whatever.)
+
+
+Additionally, if the output is not all nice and 'column-y' like you would prefer, make the
+ following tweaks to the LaTeX output:
+
+1 - Wrap the output with:
+    \begin{empheq}{align}
+        <output here>
+    \end{empheq}
+ (or simply the align environment, or whatever.)
+
+2 - Change every '=' to a '&=' .
+
+3 - Tack a '\\' onto every line except the last.
+
+ This is all pretty easy to do with some regular expressions: step 2 is s/=/\&/   step 3 is s/$/\\\\/
+
+
+
