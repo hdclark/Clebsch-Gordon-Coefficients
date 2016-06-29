@@ -55,20 +55,21 @@ One will not likely have a "\ket{  }" or "\braket{ }{ }" macro in LaTeX. If you 
  (or use the nearly equivalent "renewcommand" or "ensurecommand" or whatever.)
 
 
-Additionally, if the output is not all nice and 'column-y' like you would prefer, make the
+Additionally, if the output is not aligned to your perfection, make the
  following tweaks to the LaTeX output:
 
 1 - Wrap the output with:
-    \begin{empheq}{align}
-        <output here>
-    \end{empheq}
- (or simply the align environment, or whatever.)
+      \begin{empheq}{align}
+          <output here>
+      \end{empheq}
+    (or simply the align environment, or whatever.)
 
 2 - Change every '=' to a '&=' .
 
 3 - Tack a '\\' onto every line except the last.
 
- This is all pretty easy to do with some regular expressions: step 2 is s/=/\&/   step 3 is s/$/\\\\/
+4 - Optionally add '\allowdisplaybreaks' and '\pagestyle{empty}' to the LaTeX header if your lines are 
+    long or many.
 
-
+ This is all pretty easy to do with some regular expressions: step 2 is s/=/\&=/   step 3 is s/$/\\\\/
 

@@ -5,14 +5,15 @@
 //           < j_{1}, j_{2}, m_{1}, m_{2} | j_{1}, j_{2}, j, m >.
 //
 //See, for instance, Sakurai '94, Section 3.7 - Addition of Angular Momentum (page 203.)
-//Written by haley clark in 2011 for Phys 500 - Quantum Mechanics I, Assignment #4.
-//License has not yet been chosen. Please contact the author to help choose one.
+// Written by haley clark in 2011 for Phys 500 - Quantum Mechanics I, Assignment #4.
+// License is GPLv3+.
 //
 //The coefficients are stored in a map using a CGCcoeff instance as the key value.
 // We are looking for the factor in front, which will necessarily (likely) involve
 // the addition of square roots of fractions. We neglect the square root until the 
 // end, but we then have to account for addition of square roots. To this end, we
-// simply stick each such term in the sum long into an element of a vector.
+// simply stick each such term in the sum into an element of a vector.
+
 #include <iostream>
 #include <string>
 #include <cmath>
@@ -39,10 +40,6 @@ long long int time_diff(struct timeval *A){
     return (B.tv_sec-(*A).tv_sec)*1E6 + B.tv_usec - (*A).tv_usec;
 }
 
-
-
-
-
 template <class T>
 std::string XtoString(T numb){
     std::stringstream ss;
@@ -53,6 +50,11 @@ std::string XtoString(T numb){
 //################################# frac #####################################
 //A simple class to describe fractional long integers. Nothing fancy, but we have to
 // make our own in C++.
+//
+// Note you might prefer std::rational if it is accepted for C++17++ (or beyond), or
+// use Boost's Rational Number Library instead. This implementation works, but it not 
+// efficient, clever, or even safe for large numbers.
+//
 class frac { //Is not guaranteed to elegantly handle zeros!
     public:
         long int numer, denom;
@@ -258,7 +260,7 @@ std::ostream & operator<<( std::ostream &out, const frac &L ) {
 
 //############################# CGCcoeff ###################################
 //Not a terribly useful class. It is used as a key value for a mapping. It 
-// also holds some convenience routines (like prlong inting, etc.)
+// also holds some convenience routines (like printing, etc.)
 class CGCcoeff {
     public:
         frac j1, j2, m1, m2, j, m;
@@ -306,7 +308,7 @@ std::ostream & operator<<( std::ostream &out, const CGCcoeff &L ) {
 //-------------------------------  Physics  ----------------------------------------
 
 void ListAllPossibleCGCs(frac j1, frac j2, frac m1, frac m2, frac j, frac m){
-    //Lists all CGC's which satisfy the three constralong ints:
+    //Lists all CGC's which satisfy the three constraints:
     //  1)   |m_{1}| <= j_{1}
     //  2)   |m_{2}| <= j_{2}
     //  3)   -j <= |m_{1} + m_{2}| <= j
@@ -330,9 +332,9 @@ void ListAllPossibleCGCs(frac j1, frac j2, frac m1, frac m2, frac j, frac m){
 
 
 std::map<CGCcoeff,std::vector<frac> > DetermineAllCGCs(frac j1, frac j2, frac j){
-    //This is the meat and potatoes of this code. It cycles through all possible
+    //This routine is the core of this program. It cycles through all possible
     // coefficients and determines them in terms of a particular one. They are 
-    // then normalized and sent out. At this polong int, one would receive them, pick 
+    // then normalized and sent out. At this point, one would receive them, pick 
     // out the ones they need, and then discard the rest.
     //
     //They are sent out in the form of a map<CGCcoeff, vector of fractions>.
@@ -393,7 +395,7 @@ std::map<CGCcoeff,std::vector<frac> > DetermineAllCGCs(frac j1, frac j2, frac j)
             std::cerr << "Found a troublesome zero in step 6. Tell the human to fix me." << std::endl;
             exit(0);
         }
-        //Get the prefactors from the polong int above (the polong int denoted C.)
+        //Get the prefactors from the point above (the point denoted C.)
         std::vector<frac> PreFactorsC = TheCoeffs[ CGCcoeff(j1,j2,m1_max,m2+1,j,m) ];
         PreFactorsA.push_back( (C/A)*PreFactorsC[0] );  //Only one number to worry about here.
         if(PreFactorsA.size() != 0)  TheCoeffs[ CGCcoeff(j1,j2,m1_max,m2,j,m-1) ] = PreFactorsA;
@@ -432,8 +434,8 @@ std::map<CGCcoeff,std::vector<frac> > DetermineAllCGCs(frac j1, frac j2, frac j)
             std::cerr << "Found a troublesome zero in step 7. Tell the human to fix me." << std::endl;
             exit(0);
         }
-        //Get the prefactors from the local polong int (polong int A) and the one below (polong int C)
-        // so we can determine the prefactor for the polong int to the left (polong int B.)
+        //Get the prefactors from the local point (point A) and the one below (point C)
+        // so we can determine the prefactor for the point to the left (point B.)
         std::vector<frac> PreFactorsA = TheCoeffs[ CGCcoeff(j1,j2,m1,m2,j,m+1) ];
         std::vector<frac> PreFactorsC;
         if( (m2-1).abs() <= j2 ) PreFactorsC = TheCoeffs[ CGCcoeff(j1,j2,m1,m2-1,j,m) ];
@@ -443,9 +445,9 @@ std::map<CGCcoeff,std::vector<frac> > DetermineAllCGCs(frac j1, frac j2, frac j)
         if(PreFactorsB.size() != 0)  TheCoeffs[ CGCcoeff(j1,j2,m1-1,m2,j,m) ] = PreFactorsB;
     }
 
-    // At this polong int, all coefficients below m2_max are known (up to a normalization factor.) 
+    // At this point, all coefficients below m2_max are known (up to a normalization factor.) 
 
-    //Step 9) Use the J- relation to determine the prefactors for the polong ints 
+    //Step 9) Use the J- relation to determine the prefactors for the points 
     // above (m1_max,m2_max). 
     for(frac m2 =  (m2_max);   m2 <= j2; ++m2)
     for(frac m1 = (m1_max-1); m1 >= -j1; --m1)
@@ -478,8 +480,8 @@ std::map<CGCcoeff,std::vector<frac> > DetermineAllCGCs(frac j1, frac j2, frac j)
             std::cerr << "Found a troublesome zero in step 9. Tell the human to fix me." << std::endl;
             exit(0);
         }
-        //Get the prefactors from the local polong int (polong int A) and the one below (polong int C)
-        // so we can determine the prefactor for the polong int to the left (polong int B.)
+        //Get the prefactors from the local point (point A) and the one below (point C)
+        // so we can determine the prefactor for the point to the left (point B.)
         std::vector<frac> PreFactorsA;
         if( (-j <= (m1+m2).abs()) && ( (m1+m2).abs() <= j ) ) PreFactorsA = TheCoeffs[ CGCcoeff(j1,j2,m1,m2,j,m-1) ];
         std::vector<frac> PreFactorsB = TheCoeffs[ CGCcoeff(j1,j2,m1+1,m2,j,m) ];
@@ -489,7 +491,7 @@ std::map<CGCcoeff,std::vector<frac> > DetermineAllCGCs(frac j1, frac j2, frac j)
         if(PreFactorsC.size() != 0)   TheCoeffs[ CGCcoeff(j1,j2,m1,m2+1,j,m) ] = PreFactorsC;
     }
 
-    //At this polong int, all coefficients specified by (j1, j2, j) should be known, (relative to 
+    //At this point, all coefficients specified by (j1, j2, j) should be known, (relative to 
     // the first.) We thus appeal to the normalization condition to determine the absolute
     // coefficients.
     //
@@ -514,7 +516,7 @@ std::map<CGCcoeff,std::vector<frac> > DetermineAllCGCs(frac j1, frac j2, frac j)
         //Remember also that the SIGN of the elements of TOT are understood to be outside the
         // square root.
         //
-        //Proceeding carefully and naively from this polong int...
+        //Proceeding carefully and naively from this point...
         frac sum; //This will hold the such of sqrt(TOT[0]) + sqrt(TOT[1]) + sqrt(TOT[2]) + ...
 
         for(size_t i = 0; i < TOT.size(); ++i){
@@ -570,6 +572,7 @@ frac GetCoeff(frac j1, frac j2, frac m1, frac m2, frac j, frac m, std::map<CGCco
         }
     }
     //----- a GROSS SQUARE ROOT PROBLEM appears! haley uses THINK! -----------
+    // (It's super effective!)
     std::vector<frac> test;
     for(size_t i=0; i<Factors.size(); ++i) for(size_t j=0; j<Factors.size(); ++j){
         test.push_back( Factors[i] * Factors[j] );
@@ -641,40 +644,12 @@ std::string DecomposeIntoLaTeX(frac j1, frac j2, frac j, frac m){
     for(frac m1 = -j1; m1 <= j1; ++m1) for(frac m2 = -j2; m2 <= j2; ++m2){
         if( (-j <= (m1+m2).abs()) && ((m1+m2).abs() <= j) && ( (m1+m2) == m) ){
             frac TheCoeff = GetCoeff(j1,j2,m1,m2,j,m, TheMap);
-/*  //Disrespects zeros, prints negative signs first (if fed in that way), but seems to work 'aight.
-            if( !(TheCoeff.abs() == 1) ){
-                if( TheCoeff == TheCoeff.abs() ){
-                    if(firstdone == false){
-                        res += " \\sqrt{ " + TheCoeff.toLaTeX() + " } ";
-                        firstdone = true;
-                    }else{
-                        res += " + \\sqrt{ " + TheCoeff.toLaTeX() + " } ";
-                    }
-                }else{
-                    res += " - \\sqrt{ " + (TheCoeff.abs()).toLaTeX() + " } ";
-                    firstdone = true;
-                }
-            }else{
-                if( TheCoeff == TheCoeff.abs() ){
-                    if(firstdone == false){
-                        res += " ";
-                        firstdone = true;
-                    }else{
-                        res += " + ";
-                    }
-                }else{
-                    res += " - ";
-                    firstdone = true;
-                }
-            }
-*/
 
             if( TheCoeff.abs() == 0 ) continue; //"We aren't go-nna take it"  "No. We. Ain't Go-Nna TAKE IT."
 
             if(firstdone == false){
                 SignConv = TheCoeff.sign();
             }
-
 
             if( !(TheCoeff.abs() == 1) ){
                 if( (SignConv*TheCoeff) == (SignConv*TheCoeff).abs() ){
@@ -713,28 +688,6 @@ std::string DecomposeIntoLaTeX(frac j1, frac j2, frac j, frac m){
 
 int main(){
 
-/* 
-    //Generate coefficients for all combinations of particles up to spin 5.
-    //(It may take a day or two for the high-spin values!)
-    for(long int i=1; i<10; ++i) for(long int j=1; j<=i; ++j){
-        frac j1(i,2), j2(j,2);
-        frac ja = (j1 + j2).abs();
-        frac jb = (j1 - j2).abs();
-
-        for(frac m = -ja; m<=ja; ++m){
-            std::cout << DecomposeIntoLaTeX(j1,j2,ja,m) << std::endl;
-        }
-
-        if(!(jb == ja)){
-            for(frac m = -jb; m<=jb; ++m){
-                std::cout << DecomposeIntoLaTeX(j1,j2,jb,m) << std::endl;
-            }
-        }
-    }
-*/
-
-
-
     //For the homework problem: a spin 1 and a spin 2 particle: j1=1, j2=2, j=1, m={-1,0,1}.
     std::cout << DecomposeIntoLaTeX(frac(1,1), frac(2,1), frac(1,1), frac(-1,1)) << std::endl;
     std::cout << DecomposeIntoLaTeX(frac(1,1), frac(2,1), frac(1,1), frac( 0,1)) << std::endl;
@@ -757,45 +710,9 @@ int main(){
     std::cout << DecomposeIntoLaTeX(frac(1,1), frac(2,1), frac(3,1), frac( 3,1)) << std::endl;
 
 
-    return 0;
-
-/*   //Troubleshooting.
-
-long int total = 0;
-struct timeval A;
-std::fstream timingfp;
-timingfp.open("/tmp/Clebsch-Gordon-Timing-info", std::ios::out );
-
-
-    //Generate SOME OF the coefficients for combinations of particles up to spin 5.
-    for(long int i=1; i<12; ++i) for(long int j=1; j<=i; ++j){
-        frac j1(i,2), j2(j,2);
-        frac ja = (j1 + j2).abs();
-        frac jb = (j1 - j2).abs();
-
-        for(frac m = -ja; m<=ja; ++m){
-            time_set(&A);
-            std::cout << DecomposeIntoLaTeX(j1,j2,ja,m) << std::endl;
-            ++total;
-            timingfp << time_diff(&A) << " " << j1.toFloat() << " " << j2.toFloat() << " " << ja.toFloat() << " " << m.toFloat() << " " << total << std::endl;
-        }
-
-        if(!(jb == ja)){
-            for(frac m = -jb; m<=jb; ++m){
-                time_set(&A);
-                std::cout << DecomposeIntoLaTeX(j1,j2,jb,m) << std::endl;
-                ++total;
-                timingfp << time_diff(&A) << " " << j1.toFloat() << " " << j2.toFloat() << " " << jb.toFloat() << " " << m.toFloat() << " " << total << std::endl;
-            }
-        }
-    }
-
-timingfp.close();
-*/
-
-
-
 /*
+    //Examples for other decompositions:
+
     //For the two spin-1/2 case, j1=1/2, j2=1/2, j=0, m={0}.
     std::cout << DecomposeIntoLaTeX(frac(1,2), frac(1,2), frac(0,1), frac(0,1)) << std::endl;
 
@@ -854,6 +771,24 @@ timingfp.close();
 
     //For a spin 18 and a spin 15/2 particle: j1=18, j2=15/2, j=51/2, m=21/2.
     std::cout << DecomposeIntoLaTeX(frac(18,1), frac(15,2), frac(51,2), frac(21,2)) << std::endl;
+
+    //Generate coefficients for all combinations of particles up to spin 5.
+    //(It may take a day or two for the high-spin values!)
+    for(long int i=1; i<10; ++i) for(long int j=1; j<=i; ++j){
+        frac j1(i,2), j2(j,2);
+        frac ja = (j1 + j2).abs();
+        frac jb = (j1 - j2).abs();
+
+        for(frac m = -ja; m<=ja; ++m){
+            std::cout << DecomposeIntoLaTeX(j1,j2,ja,m) << std::endl;
+        }
+
+        if(!(jb == ja)){
+            for(frac m = -jb; m<=jb; ++m){
+                std::cout << DecomposeIntoLaTeX(j1,j2,jb,m) << std::endl;
+            }
+        }
+    }
 */
 
     return 0;

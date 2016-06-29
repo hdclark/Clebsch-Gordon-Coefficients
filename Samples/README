@@ -2,4 +2,5 @@ To compile the sample.tex file, use
 
     pdflatex simple.tex
 
+    pdflatex up_to_spin_4.tex
 
